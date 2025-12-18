@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #0f0f23;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .app {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .title h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .title p {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .username {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .logout {
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: rgba(255, 59, 48, 0.15);
+            color: #ff5c5c;
+            font-size: 14px;
+        }
+
+        /* New note */
+        .new-note {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .new-note textarea {
+            width: 100%;
+            min-height: 120px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            color: #ffffff;
+            font-size: 15px;
+            resize: vertical;
+        }
+
+        .new-note textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .new-note button {
+            margin-top: 12px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            background: #667eea;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Notes grid */
+        .notes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .note {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 16px;
+            position: relative;
+        }
+
+        .note p {
+            white-space: pre-wrap;
+            line-height: 1.5;
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .delete {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            font-size: 13px;
+            text-decoration: none;
+            color: #ff5c5c;
+            opacity: 0.8;
+        }
+
+        .delete:hover {
+            opacity: 1;
+        }
+
+        /* Empty state */
+        .empty {
+            text-align: center;
+            opacity: 0.6;
+            margin-top: 80px;
+        }
+
+        .empty p:first-child {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .empty p:last-child {
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="title">
+            <h1>Your Notes</h1>
+            <p>Write things you don’t want to forget</p>
+        </div>
+
+        <div class="user">
+            <span class="username">{{ name }}</span>
+            <a href="/logout" class="logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- New note -->
+    <div class="new-note">
+        <form method="POST">
+            <textarea name="note" placeholder="Write a new note..." required></textarea>
+            <button type="submit">Save Note</button>
+        </form>
+    </div>
+
+    <!-- Notes -->
+    {% if notes %}
+        <div class="notes">
+            {% for note in notes %}
+                <div class="note">
+                    <a class="delete" href="/delete/{{ note.id }}">Delete</a>
+                    <p>{{ note.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty">
+            <p>No notes yet</p>
+            <p>Your thoughts will appear here</p>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
